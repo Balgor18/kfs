@@ -1,0 +1,19 @@
+[package]
+name = "kfs1"
+version = "0.1.0"
+edition = "2021"
+authors = ["Catinaud Florian <fcatinau@student.42.fr>"]
+
+[lib]
+path = "./src/main.rs"
+crate-type = ["staticlib"]
+
+# the profile used for `cargo build`
+[profile.dev]
+panic = "abort" # disable stack unwinding on panic
+
+# the profile used for `cargo build --release`
+[profile.release]
+panic = "abort" # disable stack unwinding on panic
+
+[dependencies]

@@ -1,0 +1,6 @@
+/target
+.vagrant/
+*.bin
+*.iso
+obj/
+iso/
