@@ -1,33 +1,55 @@
+#![feature(naked_functions)]
 #![no_std] // don't link the Rust standard library
 #![no_main] // disable all Rust-level entry points
+#![allow(dead_code)]
 
+macro_rules! printk {
+    ($($args:tt)*) => {
+        unsafe {
+            use core::fmt::Write;
+            writeln!(crate::VGA, $($args)*).unwrap();
+        }
+    }
+}
+
+mod driver;
+mod keyboard;
+mod utility;
+use core::arch::global_asm;
 use core::{panic::PanicInfo};
+use keyboard::keyboard::Keyboard;
+
+// Handle entry
+use driver::vga::{Color, Vga};
+use driver::ps2::wait_for_next_scancode;
 
 /// This function is called on panic.
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    unsafe {
+        VGA.set_color(Color::Red);
+    }
+    printk!("{info}");
     loop {}
 }
 
-// #[no_mangle] // don't mangle the name of this function
-// pub extern "C" fn _start() -> ! {
-//     // this function is the entry point, since the linker looks for a function
-//     // named `_start` by default
-//     loop {}
-// }
-
-static HELLO: &[u8] = b"Hello World!";
+static mut VGA: Vga = Vga::new();
 
 #[no_mangle]
 pub extern "C" fn kernel_main() -> ! {
-    let vga_buffer: *mut u8 = 0xb8000 as *mut u8;
-
-    for (i , &byte) in HELLO.iter().enumerate() {
-        unsafe {
-            *vga_buffer.offset(i as isize * 2) = byte;
-            *vga_buffer.offset(i as isize * 2 + 1) = 0xb;
-        }
+    unsafe{
+        VGA.reset();// Clear terminal
     }
+    let mut keyboard = Keyboard::default();
+    loop {
+        let scancode = wait_for_next_scancode();
+        if let Some(c) = keyboard.scancode_to_char(scancode) {
+            unsafe{
+                VGA.putchar(c as u8);
+            }
+        }
 
-    loop {}
+    }
 }
+
+global_asm!{include_str!("./boot.s"), options(att_syntax)}

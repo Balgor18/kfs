@@ -6,6 +6,8 @@
 .set CHECKSUM, -(MAGIC + FLAGS) /* checksum of above, to prove we are multiboot */
 
 .section .multiboot
+.global _multiboot_header
+_multiboot_header:
 .align 4
 .long MAGIC
 .long FLAGS

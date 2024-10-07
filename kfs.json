@@ -7,7 +7,14 @@
 	"target-c-int-width": "32",
     "os": "none",
 	"features": "-mmx,-sse,+soft-float",
-	"linker-flavor": "ld",
-	"pre-link-args": { "ld": ["-melf_i386"] },
+	"linker-flavor": "ld.lld",
+    "linker": "rust-lld",
+	"pre-link-args": {
+        "ld": [
+            "-T",
+            "linker.ld",
+			"-melf_i386"
+        ]
+    },
     "panic-strategy": "abort"
 }

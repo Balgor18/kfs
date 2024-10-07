@@ -4,9 +4,9 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Catinaud Florian <fcatinau@student.42.fr>"]
 
-[lib]
-path = "./src/main.rs"
-crate-type = ["staticlib"]
+# [lib]
+# path = "./src/lib.rs"
+# crate-type = ["staticlib"]
 
 # the profile used for `cargo build`
 [profile.dev]
