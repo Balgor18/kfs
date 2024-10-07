@@ -39,6 +39,8 @@ static mut VGA: Vga = Vga::new();
 pub extern "C" fn kernel_main() -> ! {
     unsafe{
         VGA.reset();// Clear terminal
+        VGA.putstr(include_str!("42.txt"));
+        VGA.putchar('\n' as u8);
     }
     let mut keyboard = Keyboard::default();
     loop {
