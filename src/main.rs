@@ -15,6 +15,8 @@ macro_rules! printk {
 mod driver;
 mod keyboard;
 mod utility;
+mod cpu;
+
 use core::arch::global_asm;
 use core::{panic::PanicInfo};
 use keyboard::keyboard::Keyboard;
@@ -41,6 +43,7 @@ pub extern "C" fn kernel_main() -> ! {
         VGA.reset();// Clear terminal
         VGA.putstr(include_str!("42.txt"));
         VGA.putchar('\n' as u8);
+        cpu::gdt::init();
     }
     let mut keyboard = Keyboard::default();
     loop {

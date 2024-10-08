@@ -2,7 +2,7 @@ TARGET_DIR 		= target/kfs/debug/
 
 KERNEL_BIN		= $(TARGET_DIR)/kfs
 
-RUST_FLAG		= --target kfs.json -Z build-std=core#,alloc #--release#--features gdt_test --features verbose
+RUST_FLAG		= --target kfs.json -Z build-std=core #--release#,alloc #--features gdt_test --features verbose
 
 CMD_RUST		= cargo
 CMD_QEMU		= qemu-system-i386
