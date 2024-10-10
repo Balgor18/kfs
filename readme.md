@@ -125,4 +125,18 @@ https://sourceware.org/gdb/onlinedocs/gdb.html
 <!-- KFS2 -->
 [GDT OSDEV]: https://wiki.osdev.org/Global_Descriptor_Table "GDT"
 [GDT youtube]: https://www.youtube.com/watch?v=0nT_2aIOTq8&t=896s "Explain Youtube GDT"
+https://www.youtube.com/watch?v=Wh5nPn2U_1w
+
 https://www.felixcloutier.com/x86/mov#operation
+
+<!--
+Debug system
+Launch with : qemu-system-i386 -kernel target/kfs/debug/kfs -s -S
+
+
+Launch :
+gdb target/kfs/release/kfs
+target remote :1234
+b // Breakpoint on your function
+continue // Start the debugging
+-->

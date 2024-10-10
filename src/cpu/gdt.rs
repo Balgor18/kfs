@@ -34,14 +34,6 @@ pub struct DescriptorTable {
     pub base: u64,
 }
 
-// unsafe impl Send for DescriptorTable {}
-// unsafe impl Sync for DescriptorTable {}
-
-const GDT_CONFIG : DescriptorTable = DescriptorTable {
-    limit: 7 * 8 - 1, //Size: The size of the table in bytes subtracted by 1. 
-    base: START_ADDRESS,
-};
-
 /// Installs the kernel's GDT.
 ///
 /// # Safety
@@ -50,24 +42,28 @@ const GDT_CONFIG : DescriptorTable = DescriptorTable {
 pub unsafe fn init() {
     core::ptr::copy_nonoverlapping(GDT.as_ptr(), START_ADDRESS as *mut u64, 7);
 
+    const GDT_CONFIG : DescriptorTable = DescriptorTable {
+        limit: 7 * 8 - 1, //Size: The size of the table in bytes subtracted by 1. 
+        base: START_ADDRESS,
+    };
+
     lgdt(&GDT_CONFIG);
 
     // Reload the data segment registers.
     asm!(
         "
-        mov {tmp:x}, {offset_data}
-        mov ds, {tmp:x}
-        mov es, {tmp:x}
-        mov fs, {tmp:x}
-        mov gs, {tmp:x}
-        mov ss, {tmp:x}
+        mov {rgs_tmp:x}, {offset_data}
+        mov ds, {rgs_tmp:x}
+        mov es, {rgs_tmp:x}
+        mov fs, {rgs_tmp:x}
+        mov gs, {rgs_tmp:x}
+        mov ss, {rgs_tmp:x}
+        jmp ${offset_code}, $2f; 2:
         ",
-        tmp = lateout(reg) _, 
-        offset_data = const DATA_OFFSET, options(preserves_flags, nostack, nomem)
-    );
-
-    asm!(
-        "jmp ${offset_code}, $2f; 2:",
+        rgs_tmp = lateout(reg) _, // Create a tmp variable to pass the same CPU register 
+        //`reg` means rust take only one register never use before
+        // _ This symbols means to drop the variable we don't need it anymore
+        offset_data = const DATA_OFFSET,
         offset_code = const CODE_OFFSET, options(att_syntax)
     );
 }

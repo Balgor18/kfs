@@ -17,6 +17,5 @@ pub unsafe fn inb(port: u16) -> u8{
 pub unsafe fn lgdt(gdt: &DescriptorTable) {
     unsafe {
         asm!("lgdt [{}]", in(reg) gdt);
-		// asm!("lgdt [{}]", in(reg) gdt);
     }
 }
