@@ -27,6 +27,7 @@ use driver::ps2::wait_for_next_scancode;
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     unsafe {
+        VGA.reset();
         VGA.set_color(Color::Red);
     }
     printk!("{info}");
