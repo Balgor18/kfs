@@ -58,12 +58,16 @@ pub unsafe fn init() {
         mov fs, {rgs_tmp:x}
         mov gs, {rgs_tmp:x}
         mov ss, {rgs_tmp:x}
-        jmp ${offset_code}, $2f; 2:
+
         ",
         rgs_tmp = lateout(reg) _, // Create a tmp variable to pass the same CPU register 
-        //`reg` means rust take only one register never use before
-        // _ This symbols means to drop the variable we don't need it anymore
+        // `reg` means rust take only one register never use before
+        // `_` This symbols means to drop the variable we don't need it anymore
         offset_data = const DATA_OFFSET,
+        );
+
+    asm!(
+        "jmp ${offset_code}, $2f; 2:",
         offset_code = const CODE_OFFSET, options(att_syntax)
     );
 }

@@ -23,7 +23,7 @@ pub enum Color {
 
 
 /// The width of the VGA buffer.
-const WIDTH: usize = 80;
+pub const WIDTH: usize = 80;
 /// The height of the VGA buffer.
 const HEIGHT: usize = 25;
 /// The address of the VGA buffer.
