@@ -12,22 +12,27 @@ pub struct Modifiers {
 }
 
 impl Modifiers {
+    #[inline]
     pub const fn is_shifted(&self) -> bool {
         self.lshift | self.rshift
     }
 
+    #[inline]
     pub const fn is_ctrl(&self) -> bool {
         self.lctrl | self.rctrl
     }
 
+    #[inline]
     pub const fn is_alt(&self) -> bool {
         self.lalt | self.ralt
     }
 
+    #[inline]
     pub const fn is_altgr(&self) -> bool {
         self.ralt | (self.lalt & self.is_ctrl())
     }
 
+    #[inline]
     pub const fn is_caps(&self) -> bool {
         self.is_shifted() ^ self.capslock
     }
