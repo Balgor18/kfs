@@ -2,7 +2,7 @@ use crate::driver::ps2::wait_for_next_scancode;
 use crate::driver::vga::WIDTH;
 use crate::keyboard::keyboard::Keyboard;
 use crate::VGA;
-
+use core::str;
 
 pub struct Terminal {
 	cmd: [u8; WIDTH],
@@ -27,7 +27,6 @@ impl Terminal {
 	}
 
 	fn add_to_cmd(&mut self, c : u8) {
-		printk!("Len = {}", self.strlen());
 		self.cmd[self.strlen()] = c;
 	}
 
@@ -35,9 +34,22 @@ impl Terminal {
 		self.cmd = [b'\0'; WIDTH];
 	}
 
+	fn delete_last_char(&mut self) {
+		self.cmd[self.strlen() - 1] = '\0' as u8;
+	}
+
 	pub fn cmd_entry(&mut self) {
 		let scancode = wait_for_next_scancode();
 		if let Some(c) = self.layout.scancode_to_char(scancode) {
+			if c == '\x08' {
+				self.delete_last_char();
+				unsafe {
+					VGA.erase_specific_char();
+				}
+			}
+			unsafe {
+				VGA.putchar(c as u8);
+			}
 			if c != '\n' {
 				self.add_to_cmd(c as u8);
 			}
@@ -45,29 +57,30 @@ impl Terminal {
 				self.submit();
 				self.clear_cmd();
 			}
-			unsafe{
-				// Saved into cmd
-				// If c == \n check if cmd exist or no
-					// Dump the cmd when cmd is enter
-				// If c != saved char
-				VGA.putchar(c as u8);
-			}
+
 		}
 	}
 
 	fn submit(&mut self) {
-		match self.cmd {
-			"help" => {
-				unsafe{
-					VGA.putstr(include_str!("../help.txt"));
+		let length = self.cmd.iter().position(|&c| c == b'\0').unwrap_or(self.cmd.len());
+
+		if let Ok(cmd_str) = str::from_utf8(&self.cmd[..length]) {
+			match cmd_str {
+				"help" => {
+					unsafe{
+						VGA.putstr(include_str!("../help.txt"));
+					}
 				}
-			}
-			"clear" => {
-				unsafe {
-					VGA.reset();
+				"clear" => {
+					unsafe {
+						VGA.reset();
+					}
 				}
+				_ => {
+						printk!("Unknow command");
+				},
+
 			}
-			_ => (),
 		}
 	}
 
