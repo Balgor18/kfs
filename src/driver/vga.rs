@@ -23,7 +23,7 @@ pub enum Color {
 
 
 /// The width of the VGA buffer.
-const WIDTH: usize = 80;
+pub const WIDTH: usize = 80;
 /// The height of the VGA buffer.
 const HEIGHT: usize = 25;
 /// The address of the VGA buffer.
@@ -83,11 +83,23 @@ impl Vga {
         }
     }
 
+    pub fn erase_specific_char(&mut self) {
+        let value = b' ' as u16 | (self.foreground as u16) << 8;
+
+        if self.x == 0 {
+            return 
+        }
+        self.x -= 1;
+        unsafe {
+            ADDRESS.add(self.y * WIDTH + self.x).write_volatile(value);
+        }
+        self.print_cursor();
+    }
+
     #[inline(always)]
     pub fn set_color(&mut self, color: Color) {
         self.foreground = color;
     }
-
 
     pub fn reset(&mut self) {
         self.x = 0;

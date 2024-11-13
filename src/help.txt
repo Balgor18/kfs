@@ -1,0 +1,7 @@
+Commands available:
+ - help            display this help
+ - clear           clear the console
+
+Shortcuts available:
+ - Ctrl + C        clear the command-line
+ - Ctrl + L        clear the console

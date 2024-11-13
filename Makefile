@@ -1,8 +1,8 @@
 TARGET_DIR 		= target/kfs/debug/
 
-KERNEL_BIN		= $(TARGET_DIR)/kfs
+KERNEL_BIN		= $(TARGET_DIR)kfs
 
-RUST_FLAG		= --target kfs.json -Z build-std=core#,alloc #--release#--features gdt_test --features verbose
+RUST_FLAG		= --target kfs.json -Z build-std=core #--release#,alloc #--features gdt_test --features verbose
 
 CMD_RUST		= cargo
 CMD_QEMU		= qemu-system-i386
@@ -14,8 +14,8 @@ all : $(KERNEL_BIN)
 $(KERNEL_BIN):
 	$(CMD_RUST) build $(RUST_FLAG) 
 
-qemu: $(KERNEL_BIN)
-	$(CMD_QEMU) -name kfs -kernel $(KERNEL_BIN) -boot c -curses
+sim: $(KERNEL_BIN)
+	$(CMD_QEMU) -kernel $(KERNEL_BIN)
 
 stopsim:
 	kill -9 $$(top -bn1 | grep qemu | awk '{ print $$1 }')

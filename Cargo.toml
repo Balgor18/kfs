@@ -1,5 +1,5 @@
 [package]
-name = "kfs1"
+name = "kfs"
 version = "0.1.0"
 edition = "2021"
 authors = ["Catinaud Florian <fcatinau@student.42.fr>"]

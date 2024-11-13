@@ -15,13 +15,17 @@ macro_rules! printk {
 mod driver;
 mod keyboard;
 mod utility;
+mod cpu;
+mod terminal;
+
 use core::arch::global_asm;
 use core::{panic::PanicInfo};
-use keyboard::keyboard::Keyboard;
+// use keyboard::keyboard::Keyboard;
 
 // Handle entry
 use driver::vga::{Color, Vga};
-use driver::ps2::wait_for_next_scancode;
+// use driver::ps2::wait_for_next_scancode;
+use terminal::terminal::Terminal;
 
 /// This function is called on panic.
 #[panic_handler]
@@ -42,17 +46,16 @@ pub extern "C" fn kernel_main() -> ! {
         VGA.reset();// Clear terminal
         VGA.putstr(include_str!("42.txt"));
         VGA.putchar('\n' as u8);
+        cpu::gdt::init();
     }
-    let mut keyboard = Keyboard::default();
+    // let mut keyboard = Keyboard::default();
+    let mut terminal : Terminal = Terminal::new();
     loop {
-        let scancode = wait_for_next_scancode();
-        if let Some(c) = keyboard.scancode_to_char(scancode) {
-            unsafe{
-                VGA.putchar(c as u8);
-            }
-        }
-
+        terminal.cmd_entry();
+        // Terminal::cmd_entry(keyboard);
     }
+    // let mut keyboard = Keyboard::default();
+    
 }
 
 global_asm!{include_str!("./boot.s"), options(att_syntax)}
