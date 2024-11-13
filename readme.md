@@ -14,8 +14,8 @@ I start the project with this [Blog][Rust Blog] but this doc got some few error 
 
 
 ## Second part of KFS
-In this part of the project we need to create the GDT(Global Descriptor Table).
-We used this [docs][GDT OSDEV] and a [video][GDT youtube].
+In this part of the project we need to create the GDT(Global Descriptor Table).  
+We used this [docs][GDT OSDEV] and a [video][GDT youtube].  
 <!-- ## Qu'est ce qu'un OS ?
 Un logiciel controllant le systéme informatique et les ressources.
 Fonction principale d'un OS :
@@ -112,8 +112,6 @@ Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev]
 +-------------------------+
 -->
 
-https://sourceware.org/gdb/onlinedocs/gdb.html
-
 <!-- KFS1 -->
 [QEMU Install]: https://www.qemu.org/download/
 [Rust Install]: https://www.rust-lang.org/tools/install
@@ -136,6 +134,8 @@ https://sourceware.org/gdb/onlinedocs/gdb.html
 
 
 <!-- Few links useful -->
+[GDB website]: https://sourceware.org/gdb/onlinedocs/gdb.html
+
 [Wildcard rust]: https://doc.rust-lang.org/reference/patterns.html#wildcard-pattern
 [Ignore value]: https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#ignoring-an-entire-value-with-_
 [Video GDT]: https://www.youtube.com/watch?v=Wh5nPn2U_1w
