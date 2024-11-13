@@ -12,6 +12,10 @@ I start the project with this [Blog][Rust Blog] but this doc got some few error 
 - [Keyboard input][felixcloutier I/O Explain] on screen. More [docs][PS2 controller]
 - Implement [Cursor][Cursor I/O]
 
+
+## Second part of KFS
+In this part of the project we need to create the GDT(Global Descriptor Table).
+We used this [docs][GDT OSDEV] and a [video][GDT youtube].
 <!-- ## Qu'est ce qu'un OS ?
 Un logiciel controllant le systéme informatique et les ressources.
 Fonction principale d'un OS :
@@ -126,14 +130,19 @@ https://sourceware.org/gdb/onlinedocs/gdb.html
 [GDT OSDEV]: https://wiki.osdev.org/Global_Descriptor_Table "GDT"
 [GDT youtube]: https://www.youtube.com/watch?v=0nT_2aIOTq8&t=896s "Explain Youtube GDT"
 
-https://doc.rust-lang.org/reference/patterns.html#wildcard-pattern
 
-https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#ignoring-an-entire-value-with-_
 
-https://www.youtube.com/watch?v=Wh5nPn2U_1w
 
-https://www.felixcloutier.com/x86/mov#operation
 
+
+<!-- Few links useful -->
+[Wildcard rust]: https://doc.rust-lang.org/reference/patterns.html#wildcard-pattern
+[Ignore value]: https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#ignoring-an-entire-value-with-_
+[Video GDT]: https://www.youtube.com/watch?v=Wh5nPn2U_1w
+[Operateur ASM]: https://www.felixcloutier.com/x86/mov#operation
+
+
+<!-- REMIND Debug data part -->
 <!--
 Debug system
 Launch with : qemu-system-i386 -kernel target/kfs/debug/kfs -s -S
