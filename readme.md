@@ -96,20 +96,6 @@ Attention address en Hexa donc 1 chiffre Hexa = 4 bit
 
 Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev].
 
-
-+-------------------------+
-|        GDT               |
-+-------------------------+
-| Descripteur 0 (Null)    | <-- Toujours à 0, non utilisé
-+-------------------------+
-| Descripteur 1 (Code)    | <-- Segment de code
-+-------------------------+
-| Descripteur 2 (Données) | <-- Segment de données
-+-------------------------+
-| Descripteur 3 (Stack)   | <-- Segment de pile
-+-------------------------+
-| ...                     | <-- Autres descripteurs si nécessaire
-+-------------------------+
 -->
 
 <!-- KFS1 -->
@@ -128,11 +114,21 @@ Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev]
 [GDT OSDEV]: https://wiki.osdev.org/Global_Descriptor_Table "GDT"
 [GDT youtube]: https://www.youtube.com/watch?v=0nT_2aIOTq8&t=896s "Explain Youtube GDT"
 
+<!-- KFS3 -->
+https://www.youtube.com/watch?v=B1wJJNITvkY
+https://os.phil-opp.com/paging-introduction/
+https://wiki.osdev.org/Paging
+https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#Specification
 
-
-
-
-
+<!--
+1	Mémoire utilisable par le système d'exploitation.
+2	Mémoire réservée (non utilisable, souvent utilisée par le BIOS).
+3	Mémoire de type ACPI reclaimable (libérable une fois ACPI initialisé).
+4	Mémoire réservée pour les NVS (Non-Volatile Storage, comme les tables ACPI).
+5	Mémoire défectueuse ou défaillante (détectée par le BIOS ou un outil similaire).
+ -->
+https://cdrdv2.intel.com/v1/dl/getContent/671447 
+<!-- Page 4-12 4-13 -->
 <!-- Few links useful -->
 [GDB website]: https://sourceware.org/gdb/onlinedocs/gdb.html
 
@@ -141,6 +137,7 @@ Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev]
 [Video GDT]: https://www.youtube.com/watch?v=Wh5nPn2U_1w
 [Operateur ASM]: https://www.felixcloutier.com/x86/mov#operation
 
+https://github.com/rust-embedded-community/pc-keyboard/blob/HEAD/src/layouts/azerty.rs
 
 <!-- REMIND Debug data part -->
 <!--
@@ -154,3 +151,10 @@ target remote :1234
 b // Breakpoint on your function
 continue // Start the debugging
 -->
+
+<!-- 
+directory.rs:11
+mod.rs:15
+mod.rs:19
+mod.rs:55
+ -->

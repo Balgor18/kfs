@@ -25,4 +25,5 @@ stack_top:
 .type _start, @function
 _start:
 	mov $stack_top, %esp
+	push %ebx
 	call kernel_main
