@@ -1,7 +1,7 @@
 #![feature(naked_functions)]
 #![no_std] // don't link the Rust standard library
 #![no_main] // disable all Rust-level entry points
-#![allow(dead_code)]
+#![allow(dead_code, static_mut_refs)]
 
 macro_rules! printk {
     ($($args:tt)*) => {
@@ -20,6 +20,7 @@ mod terminal;
 mod memory;
 
 use core::arch::global_asm;
+use core::ptr::addr_of_mut;
 use core::{panic::PanicInfo};
 
 // Handle entry
@@ -43,6 +44,8 @@ fn panic(info: &PanicInfo) -> ! {
 
 static mut VGA: Vga = Vga::new();
 
+static mut PDE : PageDirectory = PageDirectory::new();
+
 // fn tmp_process_struct(flags: u32, decalage: u32) -> bool {
 //     return flags & decalage != 0;
 // }
@@ -54,28 +57,15 @@ pub extern "C" fn kernel_main(info : &BootInfo) -> ! {
         VGA.putstr(include_str!("42.txt"));
         VGA.putchar('\n' as u8);
         cpu::gdt::init();
+    }
 
-        printk!("MemMap :{:?}", info.flags & MEMORY_MAP != 0);
+    printk!("MemMap :{:?}", info.flags & MEMORY_MAP != 0);
 
-        if (info.flags & MEMORY_MAP) != 0 {
-            printk!("Activate Paging");
-            //  Add condition to check if the flag of memory is set
-            let pde : *const PageDirectory = &memory::init(info.mmap_addr, info.mmap_length);
+    // if (info.flags & MEMORY_MAP) != 0 {
 
-            printk!("{:?}",pde);
-
-            memory::activate_pagging(pde as u32);
-            printk!("End paging ")
-        } else {
-            printk!("Paging is not activate");
-        }
-        // ======================= TO KEEP WORK FOR LATER
-        // printk!("{:?}", *info.mmap_addr);
-        // let test1 = info.mmap_addr.byte_add((*info.mmap_addr).size as usize + 4);
-        // printk!("{:?}", *test1);
-
-        // ==============================================================
-
+    unsafe {
+        memory::init(& mut PDE);
+        memory::activate_pagging(addr_of_mut!(PDE));
     }
 
     let mut terminal : Terminal = Terminal::new();

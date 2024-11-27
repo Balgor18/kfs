@@ -9,49 +9,19 @@ pub mod page_table;
 
 const PAGE_PRESENT: u32 = 0x1;   // Present
 const PAGE_RW: u32 = 0x2;        // Read/Write
+const ACCESSED: u32 = 0x5;
+const DIRTY: u32 = 0x6;
 
-pub fn init(mmap_info : *mut MmapInfo, mmap_length : u32) -> PageDirectory {
+pub fn init(pde : & mut PageDirectory) {
+	let start_page = 0 as u32;
+	let end_page = 1024 as u32;
 
-	let mut page_directory = PageDirectory::new();
-	let mut page_table = PageTable::new();
-
-	let mut offset : u32 = 0;
-	let mut tmp : *mut MmapInfo = mmap_info;
-
-	unsafe {
-		while offset < mmap_length {
-			if (*tmp).type_ == 1 {
-
-				// CASE OF 4Kib
-				if (*tmp).base_addr < 0x00400000 {
-					let start_page = (*tmp).base_addr / 0x1000;
-					let end_page = ((*tmp).base_addr + (*tmp).length) / 0x1000;
-	
-					for page in start_page..end_page {
-						page_table.map_4kb_page(page as usize, (page * 0x1000) as u32, PAGE_PRESENT | PAGE_RW);
-					}
-				// CASE OF 4Mib
-				} else {
-					let start_page = (*tmp).base_addr / 0x400000;
-					let end_page = ((*tmp).base_addr + (*tmp).length) / 0x400000;
-	
-					for page in start_page..end_page {
-						page_directory.map_4mb_page(page as usize, (page * 0x400000) as u32, PAGE_PRESENT | PAGE_RW);
-					}
-				}
-			}
-			tmp = tmp.byte_add((*tmp).size as usize + 4);
-			offset += (*tmp).size + 4;
-		}
+	for page in start_page..end_page {
+		pde.map_4mb_page(page as usize, page * 0x00400000, PAGE_PRESENT | PAGE_RW | ACCESSED | DIRTY);
 	}
-
-	// Push Page Table into the Page Directory
-	page_directory.map_page_table(0, &page_table, PAGE_PRESENT | PAGE_RW);
-
-	return page_directory;
 }
 
-pub unsafe fn activate_pagging(page_directory : u32) {
+pub unsafe fn activate_pagging(page_directory : * mut PageDirectory) {
 	asm!(
 		// 1. Load address in CR3
 		"
@@ -60,7 +30,7 @@ pub unsafe fn activate_pagging(page_directory : u32) {
 		// 2. Activate extension CR4
 		"
 		mov {tmp}, cr4
-		or {tmp}, 0x20
+		or {tmp}, 0x10
 		mov cr4, {tmp}
 		",
 		// 3. Activate CR0 with PG = 1
