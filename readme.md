@@ -98,6 +98,12 @@ Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev]
 
 -->
 
+## Third part of KFS
+In this part of the project we need to activate Paging.  
+We used this [docs][Paging OSDEV] and a [video][Paging Video].  
+[Intel Doc][Intel Docs books] for help see page 4-12 4-13.  
+Another help for this part of the project is this [rust blog][[Rust blog Paging]].  
+
 <!-- KFS1 -->
 [QEMU Install]: https://www.qemu.org/download/
 [Rust Install]: https://www.rust-lang.org/tools/install
@@ -115,20 +121,13 @@ Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev]
 [GDT youtube]: https://www.youtube.com/watch?v=0nT_2aIOTq8&t=896s "Explain Youtube GDT"
 
 <!-- KFS3 -->
-https://www.youtube.com/watch?v=B1wJJNITvkY
-https://os.phil-opp.com/paging-introduction/
-https://wiki.osdev.org/Paging
-https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#Specification
-
-<!--
-1	Mémoire utilisable par le système d'exploitation.
-2	Mémoire réservée (non utilisable, souvent utilisée par le BIOS).
-3	Mémoire de type ACPI reclaimable (libérable une fois ACPI initialisé).
-4	Mémoire réservée pour les NVS (Non-Volatile Storage, comme les tables ACPI).
-5	Mémoire défectueuse ou défaillante (détectée par le BIOS ou un outil similaire).
- -->
-https://cdrdv2.intel.com/v1/dl/getContent/671447 
+[Paging OSDEV]: https://wiki.osdev.org/Paging  
+[Intel Docs books]: https://cdrdv2.intel.com/v1/dl/getContent/671447  
 <!-- Page 4-12 4-13 -->
+
+[Paging Video]: https://www.youtube.com/watch?v=B1wJJNITvkY  
+[Rust blog Paging]: https://os.phil-opp.com/paging-introduction/  
+
 <!-- Few links useful -->
 [GDB website]: https://sourceware.org/gdb/onlinedocs/gdb.html
 
@@ -136,11 +135,12 @@ https://cdrdv2.intel.com/v1/dl/getContent/671447
 [Ignore value]: https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#ignoring-an-entire-value-with-_
 [Video GDT]: https://www.youtube.com/watch?v=Wh5nPn2U_1w
 [Operateur ASM]: https://www.felixcloutier.com/x86/mov#operation
+[Multiboot Header]: https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#Specification  
 
-https://github.com/rust-embedded-community/pc-keyboard/blob/HEAD/src/layouts/azerty.rs
+<!-- https://github.com/rust-embedded-community/pc-keyboard/blob/HEAD/src/layouts/azerty.rs -->
 
-<!-- REMIND Debug data part -->
-<!--
+<!-- REMIND Debug data part 
+
 Debug system
 Launch with : qemu-system-i386 -kernel target/kfs/debug/kfs -s -S
 

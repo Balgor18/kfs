@@ -29,7 +29,7 @@ use memory::directory::PageDirectory;
 use terminal::terminal::Terminal;
 
 // Struct for multiboot
-use utility::multiboot::{BootInfo, MEMORY_MAP};
+use utility::multiboot::{BootInfo};
 
 /// This function is called on panic.
 #[panic_handler]
@@ -51,15 +51,13 @@ static mut PDE : PageDirectory = PageDirectory::new();
 // }
 
 #[no_mangle]
-pub extern "C" fn kernel_main(info : &BootInfo) -> ! {
+pub extern "C" fn kernel_main(_info : &BootInfo) -> ! {
     unsafe{
         VGA.reset();// Clear terminal
         VGA.putstr(include_str!("42.txt"));
         VGA.putchar('\n' as u8);
         cpu::gdt::init();
     }
-
-    printk!("MemMap :{:?}", info.flags & MEMORY_MAP != 0);
 
     // if (info.flags & MEMORY_MAP) != 0 {
 
