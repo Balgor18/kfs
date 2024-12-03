@@ -124,9 +124,10 @@ Another help for this part of the project is this [rust blog][[Rust blog Paging]
 [Paging OSDEV]: https://wiki.osdev.org/Paging  
 [Intel Docs books]: https://cdrdv2.intel.com/v1/dl/getContent/671447  
 <!-- Page 4-12 4-13 -->
-
 [Paging Video]: https://www.youtube.com/watch?v=B1wJJNITvkY  
 [Rust blog Paging]: https://os.phil-opp.com/paging-introduction/  
+
+<!-- KFS4 -->
 
 <!-- Few links useful -->
 [GDB website]: https://sourceware.org/gdb/onlinedocs/gdb.html
@@ -139,6 +140,9 @@ Another help for this part of the project is this [rust blog][[Rust blog Paging]
 
 <!-- https://github.com/rust-embedded-community/pc-keyboard/blob/HEAD/src/layouts/azerty.rs -->
 
+<!-- Launch system
+cargo build && qemu-system-i386 -kernel target/kfs/debug/kfs
+ -->
 <!-- REMIND Debug data part 
 
 Debug system
