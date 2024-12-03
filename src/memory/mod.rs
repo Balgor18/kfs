@@ -1,8 +1,5 @@
 use core::arch::asm;
 use directory::PageDirectory;
-use page_table::PageTable;
-
-use crate::utility::multiboot::MmapInfo;
 
 pub mod directory;
 pub mod page_table;
@@ -11,13 +8,14 @@ const PAGE_PRESENT: u32 = 0x1;   // Present
 const PAGE_RW: u32 = 0x2;        // Read/Write
 const ACCESSED: u32 = 0x5;
 const DIRTY: u32 = 0x6;
+const ADRESS_4MB : u32 = 0x00400000;
 
 pub fn init(pde : & mut PageDirectory) {
 	let start_page = 0 as u32;
 	let end_page = 1024 as u32;
 
 	for page in start_page..end_page {
-		pde.map_4mb_page(page as usize, page * 0x00400000, PAGE_PRESENT | PAGE_RW | ACCESSED | DIRTY);
+		pde.map_4mb_page(page as usize, page * ADRESS_4MB, PAGE_PRESENT | PAGE_RW | ACCESSED | DIRTY);
 	}
 }
 
