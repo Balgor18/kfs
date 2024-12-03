@@ -17,7 +17,8 @@ _multiboot_header:
 .section .bss
 .align 16
 stack_bottom:
-.skip 16384 # 16 KiB
+/*.skip 16384 # 16 KiB */
+.skip 32768 # 32 KiB
 stack_top:
 
 .section .text
@@ -25,4 +26,5 @@ stack_top:
 .type _start, @function
 _start:
 	mov $stack_top, %esp
+	push %ebx
 	call kernel_main
