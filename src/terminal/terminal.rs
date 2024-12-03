@@ -3,6 +3,8 @@ use crate::driver::vga::WIDTH;
 use crate::keyboard::keyboard::Keyboard;
 use crate::VGA;
 use core::str;
+use crate::keyboard::layout::azerty::Azerty;
+use crate::keyboard::layout::qwerty::Qwerty;
 
 pub struct Terminal {
 	cmd: [u8; WIDTH],
@@ -13,7 +15,7 @@ impl Terminal {
 	pub fn new() -> Self {
 		Self {
 			cmd: [b'\0'; WIDTH],
-			layout : Keyboard::default(),
+			layout : Keyboard::new(),
 		}
 	}
 
@@ -22,7 +24,7 @@ impl Terminal {
 		
 		while length < self.cmd.len() && self.cmd[length] != 0 {
 			length += 1;
-		}	
+		}
 		return length
 	}
 
@@ -46,42 +48,83 @@ impl Terminal {
 				unsafe {
 					VGA.erase_specific_char();
 				}
-			}
-			unsafe {
-				VGA.putchar(c as u8);
-			}
-			if c != '\n' {
+			} else if c != '\n' {
 				self.add_to_cmd(c as u8);
+				unsafe { VGA.putchar(c as u8); }
 			}
 			else if c == '\n' {
+				unsafe { VGA.putchar(c as u8); }
 				self.submit();
 				self.clear_cmd();
 			}
-
 		}
 	}
 
 	fn submit(&mut self) {
 		let length = self.cmd.iter().position(|&c| c == b'\0').unwrap_or(self.cmd.len());
-
+	
 		if let Ok(cmd_str) = str::from_utf8(&self.cmd[..length]) {
-			match cmd_str {
-				"help" => {
-					unsafe{
-						VGA.putstr(include_str!("../help.txt"));
+			let mut parts = cmd_str.split_whitespace(); // Découpe la commande par espaces
+			if let Some(command) = parts.next() {
+				match command {
+					"help" => {
+						unsafe {
+							VGA.putstr(include_str!("../help.txt"));
+						}
+					}
+					"clear" => {
+						unsafe {
+							VGA.reset();
+						}
+					}
+					"setkeyboard" => {
+						if let Some(layout) = parts.next() {
+							if layout == "fr" {
+								self.layout.set_layout("fr");
+							} else if layout == "us" {
+								self.layout.set_layout("us");
+							} else {
+								printk!("Unsupported layout: {}", layout);
+							}
+						} else {
+							printk!("Error: No layout specified!");
+						}
+					}
+					_ => {
+						printk!("Unknown command: {}", command);
 					}
 				}
-				"clear" => {
-					unsafe {
-						VGA.reset();
-					}
-				}
-				_ => {
-						printk!("Unknow command");
-				},
-
+				for _ in parts {}
 			}
 		}
 	}
+
+	// fn submit(&mut self) {
+	// 	let length = self.cmd.iter().position(|&c| c == b'\0').unwrap_or(self.cmd.len());
+
+	// 	if let Ok(cmd_str) = str::from_utf8(&self.cmd[..length]) {
+	// 		match cmd_str {
+	// 			"help" => {
+	// 				unsafe{
+	// 					VGA.putstr(include_str!("../help.txt"));
+	// 				}
+	// 			}
+	// 			"clear" => {
+	// 				unsafe {
+	// 					VGA.reset();
+	// 				}
+	// 			}
+	// 			"setkeyboard" => {
+					
+	// 				printk!("cmd_str {:?}", parts);
+	// 				self.layout.set_layout("test");
+	// 			}
+	// 			_ => {
+	// 					printk!("Unknow command");
+	// 			},
+
+	// 		}
+	// 	}
+	// }
 
 }
