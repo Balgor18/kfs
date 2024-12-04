@@ -37,6 +37,7 @@ impl Terminal {
 	}
 
 	fn delete_last_char(&mut self) {
+		if self.strlen() == 0 { return; }
 		self.cmd[self.strlen() - 1] = '\0' as u8;
 	}
 

@@ -1,6 +1,7 @@
 Commands available:
  - help            display this help
  - clear           clear the console
+ - setkeyboard     change the layout of the keyboard (fr, us)
 
 Shortcuts available:
  - Ctrl + C        clear the command-line
