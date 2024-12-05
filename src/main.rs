@@ -19,7 +19,7 @@ mod cpu;
 mod terminal;
 mod memory;
 
-use core::arch::global_asm;
+use core::arch::{asm, global_asm};
 use core::ptr::addr_of_mut;
 use core::{panic::PanicInfo};
 
@@ -41,6 +41,12 @@ fn panic(info: &PanicInfo) -> ! {
     loop {}
 }
 
+#[no_mangle]
+extern "C" fn interrupt_handler() {
+    // Code de gestion d'interruption (simplement pour exemple)
+    unsafe { asm!("iret", options(noreturn)); }
+}
+
 static mut VGA: Vga = Vga::new();
 
 static mut PDE : PageDirectory = PageDirectory::new();
@@ -56,6 +62,7 @@ pub extern "C" fn kernel_main(_info : &BootInfo) -> ! {
         VGA.putstr(include_str!("42.txt"));
         VGA.putchar('\n' as u8);
         cpu::gdt::init();
+        cpu::idt::init();
     }
 
     // if (info.flags & MEMORY_MAP) != 0 {

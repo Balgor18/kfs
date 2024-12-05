@@ -128,6 +128,7 @@ Another help for this part of the project is this [rust blog][[Rust blog Paging]
 [Rust blog Paging]: https://os.phil-opp.com/paging-introduction/  
 
 <!-- KFS4 -->
+https://wiki.osdev.org/Interrupt_Descriptor_Table
 
 <!-- Few links useful -->
 [GDB website]: https://sourceware.org/gdb/onlinedocs/gdb.html
