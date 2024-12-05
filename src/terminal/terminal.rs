@@ -65,7 +65,7 @@ impl Terminal {
 		let length = self.cmd.iter().position(|&c| c == b'\0').unwrap_or(self.cmd.len());
 	
 		if let Ok(cmd_str) = str::from_utf8(&self.cmd[..length]) {
-			let mut parts = cmd_str.split_whitespace(); // Découpe la commande par espaces
+			let mut parts = cmd_str.split_whitespace();
 			if let Some(command) = parts.next() {
 				match command {
 					"help" => {
@@ -95,37 +95,8 @@ impl Terminal {
 						printk!("Unknown command: {}", command);
 					}
 				}
-				for _ in parts {}
 			}
 		}
 	}
-
-	// fn submit(&mut self) {
-	// 	let length = self.cmd.iter().position(|&c| c == b'\0').unwrap_or(self.cmd.len());
-
-	// 	if let Ok(cmd_str) = str::from_utf8(&self.cmd[..length]) {
-	// 		match cmd_str {
-	// 			"help" => {
-	// 				unsafe{
-	// 					VGA.putstr(include_str!("../help.txt"));
-	// 				}
-	// 			}
-	// 			"clear" => {
-	// 				unsafe {
-	// 					VGA.reset();
-	// 				}
-	// 			}
-	// 			"setkeyboard" => {
-					
-	// 				printk!("cmd_str {:?}", parts);
-	// 				self.layout.set_layout("test");
-	// 			}
-	// 			_ => {
-	// 					printk!("Unknow command");
-	// 			},
-
-	// 		}
-	// 	}
-	// }
 
 }

@@ -19,3 +19,10 @@ pub unsafe fn lgdt(gdt: &DescriptorTable) {
         asm!("lgdt [{}]", in(reg) gdt);
     }
 }
+
+#[inline(always)]
+pub unsafe fn igdt(idt: &DescriptorTable) {
+    unsafe {
+        asm!("lidt [{}]", in(reg) idt);
+    }
+}
