@@ -12,6 +12,20 @@ pub struct Modifiers {
 }
 
 impl Modifiers {
+    pub fn new() -> Self {
+        Self {
+            lshift : false,
+            rshift : false,
+            lctrl : false,
+            rctrl : false,
+            numlock : false,
+            capslock : false,
+            lalt : false,
+            ralt : false,
+            rctrl2 : false,
+        }
+    }
+
     #[inline]
     pub const fn is_shifted(&self) -> bool {
         self.lshift | self.rshift
