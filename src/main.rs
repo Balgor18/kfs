@@ -1,7 +1,7 @@
 #![feature(naked_functions)]
 #![no_std] // don't link the Rust standard library
 #![no_main] // disable all Rust-level entry points
-#![allow(dead_code)]
+#![allow(dead_code, static_mut_refs)]
 
 macro_rules! printk {
     ($($args:tt)*) => {
@@ -17,15 +17,19 @@ mod keyboard;
 mod utility;
 mod cpu;
 mod terminal;
+mod memory;
 
-use core::arch::global_asm;
+use core::arch::{asm, global_asm};
+use core::ptr::addr_of_mut;
 use core::{panic::PanicInfo};
-// use keyboard::keyboard::Keyboard;
 
 // Handle entry
 use driver::vga::{Color, Vga};
-// use driver::ps2::wait_for_next_scancode;
+use memory::directory::PageDirectory;
 use terminal::terminal::Terminal;
+
+// Struct for multiboot
+use utility::multiboot::{BootInfo};
 
 /// This function is called on panic.
 #[panic_handler]
@@ -38,24 +42,41 @@ fn panic(info: &PanicInfo) -> ! {
     loop {}
 }
 
+#[no_mangle]
+extern "C" fn interrupt_handler() {
+    // Code de gestion d'interruption (simplement pour exemple)
+    unsafe { asm!("iret", options(noreturn)); }
+}
+
 static mut VGA: Vga = Vga::new();
 
+static mut PDE : PageDirectory = PageDirectory::new();
+
+// fn tmp_process_struct(flags: u32, decalage: u32) -> bool {
+//     return flags & decalage != 0;
+// }
+
 #[no_mangle]
-pub extern "C" fn kernel_main() -> ! {
+pub extern "C" fn kernel_main(_info : &BootInfo) -> ! {
     unsafe{
         VGA.reset();// Clear terminal
         VGA.putstr(include_str!("42.txt"));
         VGA.putchar('\n' as u8);
         cpu::gdt::init();
+        cpu::idt::init();
     }
-    // let mut keyboard = Keyboard::default();
+
+    // if (info.flags & MEMORY_MAP) != 0 {
+
+    unsafe {
+        memory::init(& mut PDE);
+        memory::activate_pagging(addr_of_mut!(PDE));
+    }
+
     let mut terminal : Terminal = Terminal::new();
     loop {
         terminal.cmd_entry();
-        // Terminal::cmd_entry(keyboard);
     }
-    // let mut keyboard = Keyboard::default();
-    
 }
 
 global_asm!{include_str!("./boot.s"), options(att_syntax)}

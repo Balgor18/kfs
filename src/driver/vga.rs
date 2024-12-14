@@ -66,6 +66,10 @@ impl Vga {
             return
         }
 
+        if self.x == WIDTH {
+            self.x = 0;
+            self.y += 1;
+        }
         unsafe {
             assert!(self.x < WIDTH && self.y < HEIGHT, "bad size");
             ADDRESS.add(self.y * WIDTH + self.x).write_volatile(char as u16 | (self.foreground as u16) << 8);

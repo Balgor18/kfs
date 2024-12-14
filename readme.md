@@ -96,21 +96,13 @@ Attention address en Hexa donc 1 chiffre Hexa = 4 bit
 
 Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev].
 
-
-+-------------------------+
-|        GDT               |
-+-------------------------+
-| Descripteur 0 (Null)    | <-- Toujours à 0, non utilisé
-+-------------------------+
-| Descripteur 1 (Code)    | <-- Segment de code
-+-------------------------+
-| Descripteur 2 (Données) | <-- Segment de données
-+-------------------------+
-| Descripteur 3 (Stack)   | <-- Segment de pile
-+-------------------------+
-| ...                     | <-- Autres descripteurs si nécessaire
-+-------------------------+
 -->
+
+## Third part of KFS
+In this part of the project we need to activate Paging.  
+We used this [docs][Paging OSDEV] and a [video][Paging Video].  
+[Intel Doc][Intel Docs books] for help see page 4-12 4-13.  
+Another help for this part of the project is this [rust blog][[Rust blog Paging]].  
 
 <!-- KFS1 -->
 [QEMU Install]: https://www.qemu.org/download/
@@ -128,10 +120,15 @@ Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev]
 [GDT OSDEV]: https://wiki.osdev.org/Global_Descriptor_Table "GDT"
 [GDT youtube]: https://www.youtube.com/watch?v=0nT_2aIOTq8&t=896s "Explain Youtube GDT"
 
+<!-- KFS3 -->
+[Paging OSDEV]: https://wiki.osdev.org/Paging  
+[Intel Docs books]: https://cdrdv2.intel.com/v1/dl/getContent/671447  
+<!-- Page 4-12 4-13 -->
+[Paging Video]: https://www.youtube.com/watch?v=B1wJJNITvkY  
+[Rust blog Paging]: https://os.phil-opp.com/paging-introduction/  
 
-
-
-
+<!-- KFS4 -->
+https://wiki.osdev.org/Interrupt_Descriptor_Table
 
 <!-- Few links useful -->
 [GDB website]: https://sourceware.org/gdb/onlinedocs/gdb.html
@@ -140,10 +137,15 @@ Pour mieux comprendre chacun des blocs. Je vous renvoie vers la [Doc][GDT OSDev]
 [Ignore value]: https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#ignoring-an-entire-value-with-_
 [Video GDT]: https://www.youtube.com/watch?v=Wh5nPn2U_1w
 [Operateur ASM]: https://www.felixcloutier.com/x86/mov#operation
+[Multiboot Header]: https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#Specification  
 
+<!-- https://github.com/rust-embedded-community/pc-keyboard/blob/HEAD/src/layouts/azerty.rs -->
 
-<!-- REMIND Debug data part -->
-<!--
+<!-- Launch system
+cargo build && qemu-system-i386 -kernel target/kfs/debug/kfs
+ -->
+<!-- REMIND Debug data part 
+
 Debug system
 Launch with : qemu-system-i386 -kernel target/kfs/debug/kfs -s -S
 
@@ -154,3 +156,10 @@ target remote :1234
 b // Breakpoint on your function
 continue // Start the debugging
 -->
+
+<!-- 
+directory.rs:11
+mod.rs:15
+mod.rs:19
+mod.rs:55
+ -->
