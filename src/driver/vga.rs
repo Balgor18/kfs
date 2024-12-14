@@ -55,6 +55,7 @@ impl Vga {
 
     pub fn putchar(&mut self, char: u8) {
         if char == b'\n' {
+            assert!(self.x < WIDTH && self.y < HEIGHT, "bad size");
             self.x = 0;
             self.y += 1;
             self.print_cursor();

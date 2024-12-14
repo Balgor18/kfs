@@ -31,6 +31,7 @@ use terminal::terminal::Terminal;
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     unsafe {
+        VGA.reset();
         VGA.set_color(Color::Red);
     }
     printk!("{info}");

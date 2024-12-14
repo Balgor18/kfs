@@ -46,18 +46,15 @@ impl Terminal {
 				unsafe {
 					VGA.erase_specific_char();
 				}
-			}
-			unsafe {
-				VGA.putchar(c as u8);
-			}
-			if c != '\n' {
+			} else if c != '\n' {
 				self.add_to_cmd(c as u8);
+				unsafe { VGA.putchar(c as u8); }
 			}
 			else if c == '\n' {
+				unsafe { VGA.putchar(c as u8); }
 				self.submit();
 				self.clear_cmd();
 			}
-
 		}
 	}
 
