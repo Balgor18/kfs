@@ -15,7 +15,7 @@ $(KERNEL_BIN):
 	$(CMD_RUST) build $(RUST_FLAG) 
 
 sim: $(KERNEL_BIN)
-	$(CMD_QEMU) -kernel $(KERNEL_BIN)
+	$(CMD_QEMU) -name kfs -kernel $(KERNEL_BIN)
 
 stopsim:
 	kill -9 $$(top -bn1 | grep qemu | awk '{ print $$1 }')
