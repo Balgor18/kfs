@@ -7,7 +7,7 @@ RUST_FLAG		= --target kfs.json -Z build-std=core #--release#,alloc #--features g
 CMD_RUST		= cargo
 CMD_QEMU		= qemu-system-i386
 
-.phony: qemu stopsim start connect stop clean fclean re
+.phony: sim stopsim start connect stop clean fclean re
 
 all : $(KERNEL_BIN)
 

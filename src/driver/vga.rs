@@ -78,6 +78,7 @@ impl Vga {
     }
 
     fn print_cursor(&mut self) {
+        assert!(self.x < WIDTH && self.y < HEIGHT, "bad size");
         let cursor_pos = self.y * WIDTH + self.x;
         unsafe {
             outb(0x3D4, 0x0F);
