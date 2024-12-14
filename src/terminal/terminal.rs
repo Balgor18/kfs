@@ -29,6 +29,7 @@ impl Terminal {
 	}
 
 	fn add_to_cmd(&mut self, c : u8) {
+		assert!(self.strlen() < WIDTH, "bad size");
 		self.cmd[self.strlen()] = c;
 	}
 
