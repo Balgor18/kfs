@@ -7,14 +7,14 @@ RUST_FLAG		= --target kfs.json #--release#--features gdt_test --features verbose
 CMD_RUST		= cargo
 CMD_QEMU		= qemu-system-i386
 
-.phony: qemu stopsim start connect stop clean fclean re
+.phony: sim stopsim start connect stop clean fclean re
 
 all : $(KERNEL_BIN)
 
 $(KERNEL_BIN):
 	$(CMD_RUST) build $(RUST_FLAG) 
 
-qemu: $(KERNEL_BIN)
+sim: $(KERNEL_BIN)
 	$(CMD_QEMU) -name kfs -kernel $(KERNEL_BIN)
 
 stopsim:
