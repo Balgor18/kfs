@@ -27,6 +27,7 @@ impl Terminal {
 	}
 
 	fn add_to_cmd(&mut self, c : u8) {
+		assert!(self.strlen() < WIDTH, "bad size");
 		self.cmd[self.strlen()] = c;
 	}
 
@@ -35,6 +36,7 @@ impl Terminal {
 	}
 
 	fn delete_last_char(&mut self) {
+		if self.strlen() == 0 { return; }
 		self.cmd[self.strlen() - 1] = '\0' as u8;
 	}
 
